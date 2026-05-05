@@ -23,6 +23,8 @@ namespace SerialCommunication
             serialPortArduino.ReadTimeout = 1000;
             serialPortArduino.WriteTimeout = 1000;
             this.checkBoxDigital2.CheckedChanged += new System.EventHandler(this.checkBoxDigital2_CheckedChanged);
+            this.checkBoxDigital3.CheckedChanged += new System.EventHandler(this.checkBoxDigital3_CheckedChanged);
+            this.checkBoxDigital4.CheckedChanged += new System.EventHandler(this.checkBoxDigital4_CheckedChanged);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -126,6 +128,46 @@ namespace SerialCommunication
                 if (serialPortArduino != null && serialPortArduino.IsOpen)
                 {
                     string cmd = checkBoxDigital2.Checked ? "set d2 high" : "set d2 low";
+                    serialPortArduino.WriteLine(cmd);
+                }
+                else
+                {
+                    labelStatus.Text = "Not connected";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = $"Error: {ex.Message}";
+            }
+        }
+
+        private void checkBoxDigital3_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    string cmd = checkBoxDigital3.Checked ? "set d3 high" : "set d3 low";
+                    serialPortArduino.WriteLine(cmd);
+                }
+                else
+                {
+                    labelStatus.Text = "Not connected";
+                }
+            }
+            catch (Exception ex)
+            {
+                labelStatus.Text = $"Error: {ex.Message}";
+            }
+        }
+
+        private void checkBoxDigital4_CheckedChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (serialPortArduino != null && serialPortArduino.IsOpen)
+                {
+                    string cmd = checkBoxDigital4.Checked ? "set d4 high" : "set d4 low";
                     serialPortArduino.WriteLine(cmd);
                 }
                 else
