@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.radioButtonVerbonden = new System.Windows.Forms.RadioButton();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.labelPoort = new System.Windows.Forms.Label();
@@ -88,6 +90,15 @@
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabPageTemperatuurAlarm = new System.Windows.Forms.TabPage();
+            this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.labelAlarmTemp = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.labelHuidigeTemp1 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.labelStatus1 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.timerTemperatuurAlarm = new System.Windows.Forms.Timer(this.components);
             this.tabControl.SuspendLayout();
             this.tabPageInstellingen.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -108,6 +119,8 @@
             this.tabPageOefening5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             this.statusStrip.SuspendLayout();
+            this.tabPageTemperatuurAlarm.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.SuspendLayout();
             // 
             // radioButtonVerbonden
@@ -126,6 +139,8 @@
             // 
             // buttonConnect
             // 
+            this.buttonConnect.BackColor = System.Drawing.Color.Blue;
+            this.buttonConnect.ForeColor = System.Drawing.Color.White;
             this.buttonConnect.Location = new System.Drawing.Point(288, 18);
             this.buttonConnect.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonConnect.Name = "buttonConnect";
@@ -133,8 +148,6 @@
             this.buttonConnect.TabIndex = 7;
             this.buttonConnect.Text = "Connect";
             this.buttonConnect.UseVisualStyleBackColor = false;
-            this.buttonConnect.BackColor = System.Drawing.Color.Blue;
-            this.buttonConnect.ForeColor = System.Drawing.Color.White;
             this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
             // labelPoort
@@ -169,12 +182,14 @@
             this.tabControl.Controls.Add(this.tabPageOefening3);
             this.tabControl.Controls.Add(this.tabPageOefening4);
             this.tabControl.Controls.Add(this.tabPageOefening5);
+            this.tabControl.Controls.Add(this.tabPageTemperatuurAlarm);
             this.tabControl.Location = new System.Drawing.Point(18, 81);
             this.tabControl.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1176, 641);
             this.tabControl.TabIndex = 9;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPageInstellingen
             // 
@@ -599,6 +614,7 @@
             this.tabPageOefening2.TabIndex = 1;
             this.tabPageOefening2.Text = "Oefening 2";
             this.tabPageOefening2.UseVisualStyleBackColor = true;
+            this.tabPageOefening2.Click += new System.EventHandler(this.tabPageOefening2_Click);
             // 
             // label3
             // 
@@ -862,6 +878,104 @@
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(0, 15);
             // 
+            // tabPageTemperatuurAlarm
+            // 
+            this.tabPageTemperatuurAlarm.Controls.Add(this.labelStatus1);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.label14);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.labelHuidigeTemp1);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.label12);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.labelAlarmTemp);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.label18);
+            this.tabPageTemperatuurAlarm.Controls.Add(this.pictureBox6);
+            this.tabPageTemperatuurAlarm.Location = new System.Drawing.Point(4, 29);
+            this.tabPageTemperatuurAlarm.Name = "tabPageTemperatuurAlarm";
+            this.tabPageTemperatuurAlarm.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTemperatuurAlarm.Size = new System.Drawing.Size(1168, 608);
+            this.tabPageTemperatuurAlarm.TabIndex = 6;
+            this.tabPageTemperatuurAlarm.Text = "Oefening 6";
+            this.tabPageTemperatuurAlarm.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox6
+            // 
+            this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
+            this.pictureBox6.Location = new System.Drawing.Point(6, 6);
+            this.pictureBox6.Name = "pictureBox6";
+            this.pictureBox6.Size = new System.Drawing.Size(891, 596);
+            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox6.TabIndex = 0;
+            this.pictureBox6.TabStop = false;
+            // 
+            // labelAlarmTemp
+            // 
+            this.labelAlarmTemp.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelAlarmTemp.Location = new System.Drawing.Point(775, 369);
+            this.labelAlarmTemp.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelAlarmTemp.Name = "labelAlarmTemp";
+            this.labelAlarmTemp.Size = new System.Drawing.Size(150, 35);
+            this.labelAlarmTemp.TabIndex = 7;
+            this.labelAlarmTemp.Text = "30,2 °C";
+            this.labelAlarmTemp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.labelAlarmTemp.Click += new System.EventHandler(this.label17_Click);
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(543, 374);
+            this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(180, 25);
+            this.label18.TabIndex = 6;
+            this.label18.Text = "Alarm Temperatuur";
+            // 
+            // labelHuidigeTemp1
+            // 
+            this.labelHuidigeTemp1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelHuidigeTemp1.Location = new System.Drawing.Point(775, 418);
+            this.labelHuidigeTemp1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelHuidigeTemp1.Name = "labelHuidigeTemp1";
+            this.labelHuidigeTemp1.Size = new System.Drawing.Size(150, 35);
+            this.labelHuidigeTemp1.TabIndex = 11;
+            this.labelHuidigeTemp1.Text = "21,1 °C";
+            this.labelHuidigeTemp1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(543, 424);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(195, 25);
+            this.label12.TabIndex = 10;
+            this.label12.Text = "Huidige Temperatuur";
+            // 
+            // labelStatus1
+            // 
+            this.labelStatus1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus1.Location = new System.Drawing.Point(775, 468);
+            this.labelStatus1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.labelStatus1.Name = "labelStatus1";
+            this.labelStatus1.Size = new System.Drawing.Size(150, 35);
+            this.labelStatus1.TabIndex = 13;
+            this.labelStatus1.Text = "OK";
+            this.labelStatus1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(543, 474);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(68, 25);
+            this.label14.TabIndex = 12;
+            this.label14.Text = "Status";
+            // 
+            // timerTemperatuurAlarm
+            // 
+            this.timerTemperatuurAlarm.Tick += new System.EventHandler(this.timerTemperatuurAlarm_Tick_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -906,6 +1020,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.tabPageTemperatuurAlarm.ResumeLayout(false);
+            this.tabPageTemperatuurAlarm.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -973,6 +1090,15 @@
         internal System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel labelStatus;
+        private System.Windows.Forms.TabPage tabPageTemperatuurAlarm;
+        private System.Windows.Forms.PictureBox pictureBox6;
+        internal System.Windows.Forms.Label labelStatus1;
+        internal System.Windows.Forms.Label label14;
+        internal System.Windows.Forms.Label labelHuidigeTemp1;
+        internal System.Windows.Forms.Label label12;
+        internal System.Windows.Forms.Label labelAlarmTemp;
+        internal System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Timer timerTemperatuurAlarm;
     }
 }
 

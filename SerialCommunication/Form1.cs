@@ -454,5 +454,165 @@ namespace SerialCommunication
         {
 
         }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+        
+            // -----------------------------
+            // GLOBALE VARIABELEN
+            // -----------------------------
+            int toestand = 0; // 0 = OK, 1 = ALARM, 2 = BEVESTIGD
+
+        double alarmTemp = 0.0;
+        double huidigeTemp = 0.0;
+        bool buttonBevestig = false;
+
+
+        // -----------------------------
+        // TAB WISSEL → TIMER START/STOP
+        // -----------------------------
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedTab == tabPageTemperatuurAlarm)
+                timerTemperatuurAlarm.Start();
+            else
+                timerTemperatuurAlarm.Stop();
+        }
+
+
+        // -----------------------------
+        // TIMER TICK – ALLES HIERBINNEN
+        // -----------------------------
+
+        private void timerTemperatuurAlarm_Tick_1(object sender, EventArgs e)
+        {
+            if (serialPortArduino == null || !serialPortArduino.IsOpen)
+                return;
+
+            try
+            {
+                // Oude data weggooien
+                serialPortArduino.ReadExisting();
+
+                // ----------------------------------------------------
+                // A0: POTENTIOMETER → ALARM TEMPERATUUR
+                // ----------------------------------------------------
+                serialPortArduino.WriteLine("get a0");
+                string antwoordA0 = serialPortArduino.ReadLine().Trim();
+
+                int index = antwoordA0.IndexOf(':');
+                string waardeA0 = (index >= 0) ? antwoordA0.Substring(index + 1).Trim() : antwoordA0;
+                int rawA0 = int.Parse(waardeA0);
+
+                // Herschalen naar -10°C .. +60°C
+                alarmTemp = -10.0 + (rawA0 / 1023.0) * 70.0;
+
+                labelAlarmTemp.Text = alarmTemp.ToString("0.0") + " °C";
+
+
+                // ----------------------------------------------------
+                // A1: LM35 → HUIDIGE TEMPERATUUR
+                // ----------------------------------------------------
+                serialPortArduino.WriteLine("get a1");
+                string antwoordA1 = serialPortArduino.ReadLine().Trim();
+
+                index = antwoordA1.IndexOf(':');
+                string waardeA1 = (index >= 0) ? antwoordA1.Substring(index + 1).Trim() : antwoordA1;
+                int rawA1 = int.Parse(waardeA1);
+
+                // LM35: 10mV/°C → T = raw * 500 / 1023
+                huidigeTemp = rawA1 * 500.0 / 1023.0;
+
+                labelHuidigeTemp1.Text = huidigeTemp.ToString("0.0") + " °C";
+
+
+                // ----------------------------------------------------
+                // D5: DRUKKNOP
+                // ----------------------------------------------------
+                serialPortArduino.WriteLine("get d5");
+                string antwoordD5 = serialPortArduino.ReadLine().Trim();
+
+                index = antwoordD5.IndexOf(':');
+                string waardeD5 = (index >= 0) ? antwoordD5.Substring(index + 1).Trim() : antwoordD5;
+                int rawD5 = int.Parse(waardeD5);
+
+                buttonBevestig = (rawD5 == 1);
+
+
+                // ----------------------------------------------------
+                // TOESTANDSMACHINE
+                // ----------------------------------------------------
+
+                // OK → ALARM
+                if (toestand == 0 && huidigeTemp >= alarmTemp)
+                    toestand = 1;
+
+                // ALARM → BEVESTIGD of OK
+                if (toestand == 1 && buttonBevestig)
+                {
+                    if (huidigeTemp < alarmTemp)
+                        toestand = 0;   // OK
+                    else
+                        toestand = 2;   // BEVESTIGD
+                }
+
+                // BEVESTIGD → OK
+                if (toestand == 2 && huidigeTemp < alarmTemp)
+                    toestand = 0;
+
+
+                // ----------------------------------------------------
+                // STATUS VISUALISEREN
+                // ----------------------------------------------------
+                switch (toestand)
+                {
+                    case 0: labelStatus1.Text = "OK"; break;
+                    case 1: labelStatus1.Text = "ALARM"; break;
+                    case 2: labelStatus1.Text = "BEVESTIGD"; break;
+                }
+
+
+                // ----------------------------------------------------
+                // LED & BUZZER AANSTUREN
+                // ----------------------------------------------------
+                if (toestand == 0)
+                {
+                    serialPortArduino.WriteLine("set d2 low");
+                    serialPortArduino.WriteLine("set d3 low");
+                }
+                else if (toestand == 1)
+                {
+                    serialPortArduino.WriteLine("set d2 high");
+                    serialPortArduino.WriteLine("set d3 high");
+                }
+                else if (toestand == 2)
+                {
+                    serialPortArduino.WriteLine("set d2 high");
+                    serialPortArduino.WriteLine("set d3 low");
+                }
+            }
+            catch
+            {
+                // Optioneel: foutmelding tonen
+                // labelStatus1.Text = "Communicatiefout";
+            }
+        }
+
+        private void tabPageOefening2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
